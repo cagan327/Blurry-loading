@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blurry Loading</title>
+    <style type="text/css">
+      * {
+        margin: 0px;
+        box-sizing: border-box;
+      }
+      .bg {
+        background: url("https://images.unsplash.com/photo-1576161787924-01bb08dad4a4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2104&q=80")
+          no-repeat center center/cover;
+        position: absolute;
+        filter: blur(0px);
+        top: -30px;
+        left: -30px;
+        height: calc(100vh + 60px);
+        width: calc(100vw + 60px);
+        z-index: -1;
+      }
+
+      .loading-text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: "Ubuntu", sans-serif;
+        font-size: 50px;
+        color: #fff;
+        margin: auto;
+      }
+    </style>
+    <script type="text/javascript">
+      window.onload = function () {
+        function scale(num, in_min, in_max, out_min, out_max) {
+          return (
+            ((num - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
+          );
+        }
+
+        let load = 0;
+        let bg = document.querySelector(".bg");
+        let txt = document.querySelector(".loading-text");
+        let timer = setInterval(function () {
+          load++;
+          if (load > 99) {
+            clearInterval(timer);
+          }
+          txt.innerText = `${load}%`;
+          txt.style.opacity = scale(load, 0, 100, 1, 0);
+          bg.style.filter = `blur(${scale(load, 0, 100, 30, 0)}px)`;
+        }, 30);
+      };
+    </script>
+  </head>
+  <body>
+    <section class="bg"></section>
+    <div class="loading-text">100%</div>
+  </body>
+</html>
